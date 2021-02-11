@@ -3,6 +3,10 @@
   "name": "TRACE",
   "description": "Trace your digital footprint",
   "version": "0.0.1",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking"
+  ],
   "icons": {
     "64": "icons/icon.png"
   },
