@@ -1,23 +1,27 @@
 var strip_cors = true;
+console.log("HELLO");
 
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
-
-        console.log(details);
-
-        var headers = details.responseHeaders;
+        var access_control_header_index = -1;
         if (strip_cors) {
-            for (var i = 0; i < headers.length; i++) {
-                if (headers[i].name.toLowerCase() == 'access-control-allow-origin') {
-                    headers[i].value = '*';
+            for (var i = 0; i < details.responseHeaders.length; i++) {
+                if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-origin') {
+                    console.log("header found")
+                    access_control_header_index = i;
+                    details.responseHeaders[i].value = '*';
                 }
             }
+            if (access_control_header_index == -1) {
+                details.responseHeaders.push({name: 'Access-Control-Allow-Origin', value: '*'})
+            }
         }
-        return { responseHeaders: headers };
+        console.log(details);
+        return { responseHeaders: details.responseHeaders };
     },
     {
         urls: ['<all_urls>'],
-        types: ['main_frame', 'sub_frame']//,'stylesheet','script','image','object','xmlhttprequest','other']
+        types: ['xmlhttprequest', 'other']//,'stylesheet','script','image','object','xmlhttprequest','other']
     },
-    ['blocking', 'responseHeaders']
+    ['blocking', 'responseHeaders', 'extraHeaders']
 );
