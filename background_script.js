@@ -1,5 +1,4 @@
 var strip_cors = true;
-console.log("HELLO");
 
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
@@ -7,13 +6,12 @@ chrome.webRequest.onHeadersReceived.addListener(
         if (strip_cors) {
             for (var i = 0; i < details.responseHeaders.length; i++) {
                 if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-origin') {
-                    console.log("header found")
                     access_control_header_index = i;
-                    details.responseHeaders[i].value = '*';
+                    details.responseHeaders[i].value = details.initiator;
                 }
             }
             if (access_control_header_index == -1) {
-                details.responseHeaders.push({name: 'Access-Control-Allow-Origin', value: '*'})
+                details.responseHeaders.push({name: 'Access-Control-Allow-Origin', value: details.initiator})
             }
         }
         console.log(details);
@@ -24,4 +22,5 @@ chrome.webRequest.onHeadersReceived.addListener(
         types: ['xmlhttprequest', 'other']//,'stylesheet','script','image','object','xmlhttprequest','other']
     },
     ['blocking', 'responseHeaders', 'extraHeaders']
+    // https://developer.chrome.com/docs/extensions/reference/webRequest/#life-cycle-of-requests
 );
