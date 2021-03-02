@@ -1,3 +1,5 @@
+// TODO: Make sure request initiator is either localhost or our site
+
 var strip_cors = true;
 
 chrome.webRequest.onHeadersReceived.addListener(
