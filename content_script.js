@@ -4,16 +4,28 @@
     'sign in', 
     'log in', 
     'create account',
-    'sign up'
+    'create an account',
+    'sign up',
+    'join',
+    'register'
 */
 
-/* Log in text
+/* Username text
     'username',
-    'login'
+    'login',
+    'signup_name'
 */
 
-const signInRegex = new RegExp('.*(((log|sign) (in|up))|(create account)).*');
-const logInRegex = new RegExp('.*(username|login).*')
+/* Email text
+    'email'
+*/
+
+// TODO: "continue" is used for multiple page log in
+// TODO: detect logins in iframes like on www.reddit.com
+
+const signInRegex = new RegExp('.*(((log|sign) (in|up))|((create( an)* account)|join|register)).*');
+const usernameRegex = new RegExp('.*(username|signup_name|login).*');
+const emailRegex = new RegExp('.*(email).*');
 
 var username = null;
 
@@ -23,14 +35,18 @@ window.addEventListener('load',
             if (!main()) {
                 setTimeout(main, 1000);
             }
+            // setInterval(getFrames, 10000);
         }
-        // else {
-        //     window['onload'] = function () {
-        //         if (verifySignInOrSignUpPage()) {
-        //             findUsernameField();
-        //         }
-        //     }
-        // }
+    }, false
+);
+
+window.addEventListener('click',
+    function(e) {
+        if (document.readyState === "complete") {
+            if (!main()) {
+                setTimeout(main, 1000);
+            }
+        }
     }, false
 );
 
@@ -43,17 +59,25 @@ window.addEventListener('submit',
     }, false
 );
 
+// Find sign in popups
+// function getFrames() {
+//     var frames = document.getElementsByTagName("iframe");
+//     console.log(frames);
+// }
+
 function main() {
     if (verifySignInOrSignUpPage()) {
         username = findUsernameField();
-        username.addEventListener('input', 
-            function(e) {
-                console.log(username);
-                if (username) { 
-                    console.log(username.value);
-                }
-            }, false
-        );
+        if (username) {
+            username.addEventListener('input', 
+                function(e) {
+                    console.log(username);
+                    if (username) { 
+                        console.log(username.value);
+                    }
+                }, false
+            );
+        }
         return true;
     }
     return false;
@@ -63,9 +87,6 @@ const verifySignInOrSignUpPage = () => {
     // grab potential sign in or sign up elements
     var inputs = document.getElementsByTagName('input');
     var buttons = document.getElementsByTagName('button');
-
-    console.log(buttons);
-    console.log(buttons.length);
 
     // check inputs
     for (var i = 0; i < inputs.length; i++) {
@@ -80,6 +101,7 @@ const verifySignInOrSignUpPage = () => {
 
     // check buttons
     for (var i = 0; i < buttons.length; i++) {
+        console.log(buttons[i].className);
         if (buttons[i].type.toLowerCase() == 'submit') {
             console.log(buttons[i].innerHTML.trim().toLowerCase());
             if (buttons[i].innerHTML && signInRegex.test(buttons[i].innerHTML.trim().toLowerCase())) {
@@ -96,8 +118,17 @@ const verifySignInOrSignUpPage = () => {
 const findUsernameField = () => {
     var inputs = document.getElementsByTagName('input');
     for (var i = 0; i < inputs.length; i++) {
-        if ((inputs[i].name && logInRegex.test(inputs[i].name.toLowerCase()))
-             || (inputs[i].id && logInRegex.test(inputs[i].id.toLowerCase()))
+        console.log(inputs[i].id.toLowerCase());
+        if ((inputs[i].name && usernameRegex.test(inputs[i].name.toLowerCase()))
+             || (inputs[i].id && usernameRegex.test(inputs[i].id.toLowerCase()))
+             || (inputs[i].placeholder && usernameRegex.test(inputs[i].placeholder.toLowerCase()))
+            ) {
+            console.log(inputs[i]);
+            return inputs[i];
+        } 
+        else if ((inputs[i].name && emailRegex.test(inputs[i].name.toLowerCase()))
+                || (inputs[i].id && emailRegex.test(inputs[i].id.toLowerCase()))
+                || (inputs[i].placeholder && emailRegex.test(inputs[i].placeholder.toLowerCase()))
             ) {
             console.log(inputs[i]);
             return inputs[i];
