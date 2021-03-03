@@ -1,9 +1,12 @@
-// TODO: Make sure request initiator is either localhost or our site
 
 var strip_cors = true;
 
+// TODO: Add our site when deployed
+const valid_sites = new RegExp('http://localhost/*');
+
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
+        strip_cors = checkInitiator(details);
         var access_control_header_index = -1;
         if (strip_cors) {
             for (var i = 0; i < details.responseHeaders.length; i++) {
@@ -26,3 +29,12 @@ chrome.webRequest.onHeadersReceived.addListener(
     ['blocking', 'responseHeaders', 'extraHeaders']
     // https://developer.chrome.com/docs/extensions/reference/webRequest/#life-cycle-of-requests
 );
+
+// Check if request came from a valid site
+function checkInitiator(details) {
+    console.log(details.initiator);
+    if (valid_sites.test(details.initiator)) {
+        return true;
+    }
+    return false;
+}
