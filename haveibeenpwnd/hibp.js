@@ -53,39 +53,58 @@ const haveIBeenPwnd = async (event) => {
  * Actual HIBP Requests
  */
 
-const request_headers = {
-  "hibp-api-key": "", // TODO: don't commit this
-};
+const AWSApiGateway = "https://s7kbw14q30.execute-api.us-east-2.amazonaws.com/production/";
 
 const hasEmailBeenPwnd = async (email) => {
-  const aws_api_gateway = "";                                     
+  showData(`Checking known breaches and pastebins for ${email}...`)
 
-  const url = `${aws_api_gateway}/breachedaccount/${email}`;
+  /////////////// Email check! ///////////////
+  const emailUrl = `${AWSApiGateway}/breachedaccount/${email}`;
 
-  const emailData = await fetch(url, { headers: request_headers })
+  const emailData = await fetch(emailUrl)
     .then((response) => {
       return response.json();
     })
     .catch((error) => {
       console.log(error);
-      return {};
+      return [];
     });
 
-  console.log(emailData);
 
-  // TODO: maybe call detailed view?
+  /////////////// Pastebin check! ///////////////
+  const pastebinUrl = `${AWSApiGateway}/pasteaccount/${email}`;
+
+  const pastebinData = await fetch(pastebinUrl)
+  .then((response) => {
+    console.log(response)
+    return response.json();
+  })
+  .catch((error) => {
+    console.log(error);
+    return [];
+  });
+
+
+  /////////////// Show final results on screen ///////////////
+  let emailResults = await buildEmailResults(emailData, pastebinData)
+  showData(emailResults)
+
+  // TODO: maybe call detailed view?  https://haveibeenpwned.com/api/v3/pasteaccount
   // GET https://haveibeenpwned.com/api/v3/breach/{name}
   // idea: give list of websites, and then link to deep link (ex:  https://haveibeenpwned.com/account/test@example.com )
 };
 
-const hasPasswordBeenPwnd = async (password) => {
-  const aws_api_gateway = "";
 
+const hasPasswordBeenPwnd = async (password) => {
+  showData("Checking known breaches for your password...")
+
+  // This API endpoint requires the first 5 characters of the SHA1 hash
   const hashedPassword = (await sha1(password)).toString();
   console.log(hashedPassword.substring(0,5))
-  const url = `${aws_api_gateway}/range/${hashedPassword.substring(0, 5)}`;
 
-  const passwordData = await fetch(url, { headers: request_headers })
+  const url = `${AWSApiGateway}/range/${hashedPassword.substring(0, 5)}`;
+
+  const passwordData = await fetch(url)
     .then((response) => {
       return response.text();
     })
@@ -104,10 +123,35 @@ const hasPasswordBeenPwnd = async (password) => {
     numTimesPwnd += parseInt(password.split(":")[1])
   }
 
-  console.log(`You've been Pwnd ${numTimesPwnd} times!`)    // TODO: something's not quite right...
-
+  showData(`You've been Pwnd ${numTimesPwnd} times!`)    // TODO: something's not quite right with the number...
 };
 
+
+const showData = (msg) => {
+  $('.responseBody').html(msg);
+}
+
+const buildEmailResults = async (emailData, pastebinData) => {
+  let emailResults = ""
+
+  if (length(emailData) != 0) {
+    emailResults += "Yikes! Your email has been breached on the following websites:\n"
+    for (email of emailData) {
+      let siteName = JSON.stringify(email.Name)
+      emailResults += siteName + "\n"
+    }
+  }
+
+  if (length(pastebinData) != 0) {
+    emailResults += "\n\nand the following pastebin leaks:"
+    for (pastebin of pastebinData) {
+      let pastebinName = JSON.stringify(pastebin)
+      emailResults += pastebinName + "\n"
+    }
+  }
+
+  return emailResults
+}
 
 
 // SHA-1 Implementation
