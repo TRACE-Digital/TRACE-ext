@@ -105,3 +105,6 @@ dist
 
 # Desktop services store
 .DS_Store
+
+# API Key for HaveIBeenPwnd
+secrets.json
