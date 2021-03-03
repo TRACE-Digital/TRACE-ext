@@ -1,10 +1,3 @@
-/**     TODO
- * Call Have I Been Pwnd API depending on radio selection
- * CSS for widget color green if not compromised
- * CSS for widget color red if compromised
- * Return results
- */
-
 /**
  * https://stackoverflow.com/questions/8739605/getelementbyid-returns-null
  */
