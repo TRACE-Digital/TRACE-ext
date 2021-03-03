@@ -27,11 +27,11 @@
       ]
     }
   ],
-  "page_action": {
+  "browser_action": {
     "default_icon": {
       "32": "icons/icon.png"
     },
-    "default_popup": "pageAction/index.html",
+    "default_popup": "browserAction/index.html",
     "default_title": "TRACE"
   },
   "options_ui": {
