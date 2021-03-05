@@ -1,4 +1,4 @@
-function openTab(tabName) {
+function openTab(e, tabName) {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
     for (i = 0; i < tabcontent.length; i++) {
@@ -8,8 +8,21 @@ function openTab(tabName) {
     for (i = 0; i < tablinks.length; i++) {
       tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
+    e.currentTarget.className += " active";
 }
 
-document.getElementById('add-site').onclick = openTab("London");
-document.getElementById('pwnd').onclick = openTab("Paris")
+
+document.getElementById("add-site").addEventListener('click',
+    function(e) {
+        openTab(e, 'London');
+    }
+);
+
+document.getElementById("pwnd").addEventListener('click',
+    function(e) {
+        openTab(e, 'Paris');
+    }
+)
