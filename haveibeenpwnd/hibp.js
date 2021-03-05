@@ -7,25 +7,34 @@
   window.onload = init;
 
   function init() {
-    document.getElementById("entry").addEventListener("input", validateInput);
-    document.getElementById("email").addEventListener("click", validateInput);
+    validateInput()
+    document.getElementById("entry").addEventListener("input", validateInput);  // input listener for text box
+    document.getElementById("email").addEventListener("click", validateInput);  // click listener for email radio
     document
       .getElementById("password")
-      .addEventListener("click", validateInput);
-    document.getElementById("search").addEventListener("click", haveIBeenPwnd);
+      .addEventListener("click", validateInput);                                // click listener for password radio
+    // document.getElementById("search").addEventListener("submit", haveIBeenPwnd); // submit listener for search button
   }
 })(window, document, undefined);
 
-
-/*
-          SMALL HELPERS
-*/
 
 
 
 const showData = (msg) => {
   $(".responseBody").html(msg);
 };
+
+const emailSelected = () => {
+  return $("#email").prop("checked")
+}
+
+const passwordSelected = () => {
+  return $("#password").prop("checked")
+}
+
+const inputEmpty = () => {
+  return $("#entry").val() == "" || $("#entry").val() == undefined
+}
 
 const AWSApiGateway =
   "https://s7kbw14q30.execute-api.us-east-2.amazonaws.com/production/";
@@ -39,11 +48,37 @@ const AWSApiGateway =
  *      One of the radio buttons must be selected
  */
 const validateInput = () => {
-  if ($("#entry").val() == "" || $("#entry").val() == undefined) {
+  // If one of the options is checked, enable text box input
+  if (emailSelected() || passwordSelected()) {
+    // if either radio is checked, enable text box input
+    $("#entry").attr("disabled", false)
+  }
+  else if (!emailSelected() && !passwordSelected()) {
+    // if neither radio is checked, disable text box input
+    $("#entry").attr("disabled", true)
+  }
+
+  // Controls hiding of password input
+  if (passwordSelected()) {
+    //If the password selection is made, hide password input
+    var entry = document.getElementById("entry")
+    entry.type = 'password'
+  }
+  else {
+    // otherwise, don't hide password input
+    var entry = document.getElementById("entry")
+    entry.type = 'email'
+  }
+
+  // If both the text box input AND radio selection has been made, allow search
+  if (inputEmpty()) {
+    // if no valid text in entry field, disable search option
     $("#search").attr("disabled", true);
-  } else if ($("#email").prop("checked") == $("#password").prop("checked")) {
+  } else if (emailSelected() == passwordSelected()) {
+    // if both radios are unchecked, or (somehow) both checked, disable search option
     $("#search").attr("disabled", true);
   } else {
+    // Otherwise, a normal search can proceed
     $("#search").attr("disabled", false);
   }
 };
@@ -72,7 +107,7 @@ const haveIBeenPwnd = async (event) => {
  * @param {*} email 
  */
 const hasEmailBeenPwnd = async (email) => {
-  showData(`Checking known breaches and pastebins for ${email}...`);
+  showData(`<h3>Checking known breaches and pastebins for ${email}...</h3>`);
 
   /////////////// Email check! ///////////////
   const emailUrl = `${AWSApiGateway}/breachedaccount/${email}`;
@@ -82,7 +117,7 @@ const hasEmailBeenPwnd = async (email) => {
       return response.json();
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       return [];
     });
 
@@ -91,11 +126,11 @@ const hasEmailBeenPwnd = async (email) => {
 
   const pastebinData = await fetch(pastebinUrl)
     .then((response) => {
-      console.log(response);
+      // console.log(response);
       return response.json();
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       return [];
     });
 
@@ -114,11 +149,10 @@ const hasEmailBeenPwnd = async (email) => {
  * @param {*} password 
  */
 const hasPasswordBeenPwnd = async (password) => {
-  showData("Checking known breaches for your password...");
+  showData("<h3>Checking known breaches for your password...</h3>");
 
   // This API endpoint requires the first 5 characters of the SHA1 hash
   const hashedPassword = (await sha1(password)).toString().toUpperCase();
-  console.log(hashedPassword.substring(0, 5));
 
   const url = `${AWSApiGateway}/range/${hashedPassword.substring(0, 5)}`;
 
@@ -127,7 +161,6 @@ const hasPasswordBeenPwnd = async (password) => {
       return response.text();
     })
     .catch((error) => {
-      console.log(error);
       return "";
     });
 
@@ -144,10 +177,12 @@ const hasPasswordBeenPwnd = async (password) => {
   }
 
   if (numTimesPwnd == 0) {
-    showData("This password has never been exposed!");
+    showData("<h3>This password has never been exposed!</h3>");
+    $("body").removeClass("pwnd");
     $("body").addClass("notPwnd");
   } else {
-    showData(`This password been exposed ${numTimesPwnd} times.`);
+    showData(`<h3>This password has been exposed ${numTimesPwnd} times.</h3>`);
+    $("body").removeClass("notPwnd");
     $("body").addClass("pwnd");
   }
 };
@@ -201,7 +236,18 @@ const buildEmailResults = async (emailData, pastebinData) => {
     emailResults += "</ul>\n\n<br/><br/>";
   }
 
-  pwnd ? $("body").addClass("pwnd") : $("body").addClass("notPwnd");
+  if (emailResults.length == 0) {
+    emailResults += "<h3>Your email has never been exposed!</h3>"
+  }
+
+  if (pwnd) {
+    $("body").removeClass("notPwnd");
+    $("body").addClass("pwnd");
+  }
+  else {
+    $("body").removeClass("pwnd");
+    $("body").addClass("notPwnd");
+  }
 
   return emailResults;
 };

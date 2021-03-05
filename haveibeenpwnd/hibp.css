@@ -1,7 +1,33 @@
+:root {
+    --backgroundBlack: #1e1e2f;
+    --textWhite: #f4f5f7;
+    --successGreen: #46884b;
+    --failRed: #e05555;
+  }
+
+.initial {
+    background-color: var(--backgroundBlack);
+    transition: background-color 1s linear;
+}
+
 .pwnd {
-    background-color: #f3aaaa;
+    background-color: var(--failRed);
 }
 
 .notPwnd {
-    background-color: #aaf3bb;
+    background-color: var(--successGreen);
+}
+
+h1 {
+    color: var(--textWhite);
+    font-family: "Poppins", sans-serif;
+}
+
+ul {
+    list-style: none;
+}
+
+label, h5, ul, li, h3 {
+    color: var(--textWhite);
+    font-family: "Poppins", sans-serif;
 }

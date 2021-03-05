@@ -1,28 +1,38 @@
 <!DOCTYPE html>
 <html>
   <head>
+     <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
     <script type='text/javascript' src="./hibp.js"></script>
     <link rel="stylesheet" href="hibp.css" />
   </head>
   <meta charset="utf-8"/>
 
-  <body>
-    <h1>Have I Been Pwnd?</h1>
-    <form>
-      <label for="entry">Enter Email/Password:</label>
-      <input type="text" id="entry" name="entry">
-      <br/>
-      <br/>
+  <body class="initial">
+    <h1>Is Your Data Safe?</h1>
+    <form id="form" onsubmit="haveIBeenPwnd();return false;">
+      <h5>First, select one of the following:</h5>
 
       <input type="radio" id="email" name="typeChoice">
       <label for="email">Email</label>
-
+      <br/>
       <input type="radio" id="password" name="typeChoice">
       <label for="password">Password</label>
       <br/>
       <br/>
-      <button type="button" id="search" disabled>Have I Been Pwnd?</button>
+
+      <input id="entry" name="entry" placeholder="Enter Email/Password" disabled>
+      <br/>
+      <br/>
+  
+      <button type="submit" id="search" class="btn btn-light" disabled>Check for breaches!</button>
+
+
     </form>
 
     <br/>
