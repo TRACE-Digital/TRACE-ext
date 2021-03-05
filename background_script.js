@@ -17,7 +17,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                 console.log("This is a redirected URL");
                 // Set access-control-allow-origin header to wildcard for redirected urls
                 // because initial initiator is immutable but origin will change causing CORS error
-                changeHeaders(details, '*', 'none', 'true');
+                changeHeaders(details, '*', 'accept, authorization, content-type, Referer, User-Agent', 'true');
                 // Remove this url from the list of redirected urls
                 redirected_urls.splice(redirected_urls.indexOf(details.url), 1);
             }
@@ -30,7 +30,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                         redirected_urls.push(location);
                     }
                 }
-                changeHeaders(details, details.initiator, 'none', 'true');
+                changeHeaders(details, details.initiator, 'accept, authorization, content-type, Referer, User-Agent', 'true');
             }
         }
         console.log(details);
@@ -57,10 +57,10 @@ function changeHeaders(details, allow_origin_value, allow_headers_value, allow_c
             access_control_origin_index = i;
             details.responseHeaders[i].value = allow_origin_value;
         }
-        // if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-headers') {
-        //     access_control_headers_index = i;
-        //     details.responseHeaders[i].value = allow_headers_value;
-        // }
+        if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-headers') {
+            access_control_headers_index = i;
+            details.responseHeaders[i].value = allow_headers_value;
+        }
         if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-credentials') {
             access_control_creds_index = i;
             details.responseHeaders[i].value = allow_credentials_value;
