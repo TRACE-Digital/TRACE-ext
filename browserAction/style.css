@@ -18,7 +18,7 @@ html * {
 
 .popup {
   background-color: var(--backgroundBlack);
-  height: 600px;
+  height: 550px;
   width: 400px;
 }
 

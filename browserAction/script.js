@@ -13,6 +13,9 @@
     });
 
     hibpInit()
+
+    // Start on 'Manage Sites' tab
+    openTab(null, "London")
   }
 })(window, document, undefined);
 
