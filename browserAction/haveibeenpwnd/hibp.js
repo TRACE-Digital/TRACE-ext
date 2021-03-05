@@ -1,44 +1,15 @@
 /**
- * https://stackoverflow.com/questions/8739605/getelementbyid-returns-null
+ * Initialization for HIBP tab
  */
-(function (window, document, undefined) {
-  // code that should be taken care of right away
-
-  window.onload = init;
-
-  function init() {
-    validateInput()
-    document.getElementById("entry").addEventListener("input", validateInput);  // input listener for text box
-    document.getElementById("email").addEventListener("click", validateInput);  // click listener for email radio
-    document
-      .getElementById("password")
-      .addEventListener("click", validateInput);                                // click listener for password radio
-    // document.getElementById("search").addEventListener("submit", haveIBeenPwnd); // submit listener for search button
-  }
-})(window, document, undefined);
-
-
-
-
-const showData = (msg) => {
-  $(".responseBody").html(msg);
-};
-
-const emailSelected = () => {
-  return $("#email").prop("checked")
+const hibpInit = () => {
+  validateInput();
+  document.getElementById("entry").addEventListener("input", validateInput); // input listener for text box
+  document.getElementById("email").addEventListener("click", validateInput); // click listener for email radio
+  document
+    .getElementById("password")
+    .addEventListener("click", validateInput); // click listener for password radio
+  document.getElementById("search").addEventListener("click", haveIBeenPwnd); // submit listener for search button
 }
-
-const passwordSelected = () => {
-  return $("#password").prop("checked")
-}
-
-const inputEmpty = () => {
-  return $("#entry").val() == "" || $("#entry").val() == undefined
-}
-
-const AWSApiGateway =
-  "https://s7kbw14q30.execute-api.us-east-2.amazonaws.com/production/";
-
 
 
 /**
@@ -51,23 +22,21 @@ const validateInput = () => {
   // If one of the options is checked, enable text box input
   if (emailSelected() || passwordSelected()) {
     // if either radio is checked, enable text box input
-    $("#entry").attr("disabled", false)
-  }
-  else if (!emailSelected() && !passwordSelected()) {
+    $("#entry").attr("disabled", false);
+  } else if (!emailSelected() && !passwordSelected()) {
     // if neither radio is checked, disable text box input
-    $("#entry").attr("disabled", true)
+    $("#entry").attr("disabled", true);
   }
 
   // Controls hiding of password input
   if (passwordSelected()) {
     //If the password selection is made, hide password input
-    var entry = document.getElementById("entry")
-    entry.type = 'password'
-  }
-  else {
+    var entry = document.getElementById("entry");
+    entry.type = "password";
+  } else {
     // otherwise, don't hide password input
-    var entry = document.getElementById("entry")
-    entry.type = 'email'
+    var entry = document.getElementById("entry");
+    entry.type = "email";
   }
 
   // If both the text box input AND radio selection has been made, allow search
@@ -94,7 +63,12 @@ const haveIBeenPwnd = async (event) => {
   const isPassword = $("#password").prop("checked");
 
   if (isEmail) {
-    await hasEmailBeenPwnd(entry);
+    // If entry is an email, validate email before continuing
+    if (validateEmail(entry)) {
+      await hasEmailBeenPwnd(entry);
+    } else {
+      showData('<h5 class="error">Please enter a valid email!</h5>');
+    }
   } else {
     // isPassword
     await hasPasswordBeenPwnd(entry);
@@ -104,10 +78,10 @@ const haveIBeenPwnd = async (event) => {
 
 /**
  * Checks the HaveIBeenPwnd API for how many times a given email has been exposed in a data breach.
- * @param {*} email 
+ * @param {*} email
  */
 const hasEmailBeenPwnd = async (email) => {
-  showData(`<h3>Checking known breaches and pastebins for ${email}...</h3>`);
+  showData(`<h4>Checking known breaches and pastebins for ${email}...</h4>`);
 
   /////////////// Email check! ///////////////
   const emailUrl = `${AWSApiGateway}/breachedaccount/${email}`;
@@ -137,19 +111,15 @@ const hasEmailBeenPwnd = async (email) => {
   /////////////// Show final results on screen ///////////////
   let emailResults = await buildEmailResults(emailData, pastebinData);
   showData(emailResults);
-
-  // TODO: maybe call detailed view?
-  // GET https://haveibeenpwned.com/api/v3/breach/{name}  '691a5b7a373d4f33b8c6bdfae0c4f4af'
-  // idea: give list of websites, and then link to deep link (ex:  https://haveibeenpwned.com/account/test@example.com )
 };
 
 
 /**
  * Checks the HaveIBeenPwnd API for how many times a given password has been exposed in a data breach
- * @param {*} password 
+ * @param {*} password
  */
 const hasPasswordBeenPwnd = async (password) => {
-  showData("<h3>Checking known breaches for your password...</h3>");
+  showData("<h4>Checking known breaches for your password...</h4>");
 
   // This API endpoint requires the first 5 characters of the SHA1 hash
   const hashedPassword = (await sha1(password)).toString().toUpperCase();
@@ -160,7 +130,7 @@ const hasPasswordBeenPwnd = async (password) => {
     .then((response) => {
       return response.text();
     })
-    .catch((error) => {
+    .catch((_error) => {
       return "";
     });
 
@@ -177,21 +147,21 @@ const hasPasswordBeenPwnd = async (password) => {
   }
 
   if (numTimesPwnd == 0) {
-    showData("<h3>This password has never been exposed!</h3>");
-    $("body").removeClass("pwnd");
-    $("body").addClass("notPwnd");
+    showData("<h4>This password has never been exposed!</h4>");
+    $("*").removeClass("pwnd");
+    $("*").addClass("notPwnd");
   } else {
-    showData(`<h3>This password has been exposed ${numTimesPwnd} times.</h3>`);
-    $("body").removeClass("notPwnd");
-    $("body").addClass("pwnd");
+    showData(`<h4>This password has been exposed ${numTimesPwnd} times.</h4>`);
+    $("*").removeClass("notPwnd");
+    $("*").addClass("pwnd");
   }
 };
 
 
 /**
  * Takes in the data received from HaveIBeenPwnd API and formats it in a visually pleasing way
- * @param {*} emailData 
- * @param {*} pastebinData 
+ * @param {*} emailData
+ * @param {*} pastebinData
  */
 const buildEmailResults = async (emailData, pastebinData) => {
   let pwnd = false;
@@ -200,7 +170,7 @@ const buildEmailResults = async (emailData, pastebinData) => {
   if (emailData.length != 0) {
     pwnd = true;
     emailResults +=
-      "<h3>Yikes! Your email has been exposed on the following websites:</h3>\n";
+      "<h4>Yikes! Your email has been exposed on the following websites:</h4>\n";
     emailResults += "<ul>";
     for (email of emailData) {
       let siteName = JSON.stringify(email.Name);
@@ -216,8 +186,8 @@ const buildEmailResults = async (emailData, pastebinData) => {
     pwnd = true;
     emailResults +=
       emailData.length != 0
-        ? "<h3>...and the following pastebin leaks:</h3>\n"
-        : "<h3>Yikes! Your email has been exposed in the following pastebin leaks:</h3>";
+        ? "<h4>...and the following pastebin leaks:</h4>\n"
+        : "<h4>Yikes! Your email has been exposed in the following pastebin leaks:</h4>";
 
     emailResults += "<ul>";
     for (pastebin of pastebinData) {
@@ -237,28 +207,25 @@ const buildEmailResults = async (emailData, pastebinData) => {
   }
 
   if (emailResults.length == 0) {
-    emailResults += "<h3>Your email has never been exposed!</h3>"
+    emailResults += "<h4>Your email has never been exposed!</h4>";
   }
 
   if (pwnd) {
-    $("body").removeClass("notPwnd");
-    $("body").addClass("pwnd");
-  }
-  else {
-    $("body").removeClass("pwnd");
-    $("body").addClass("notPwnd");
+    $("*").removeClass("notPwnd");
+    $("*").addClass("pwnd");
+  } else {
+    $("*").removeClass("pwnd");
+    $("*").addClass("notPwnd");
   }
 
   return emailResults;
 };
 
 
-
-
-
-
-// SHA-1 Implementation
-//https://github.com/jamiebuilds/havetheybeenpwned/blob/master/lib/sha1-browser.js
+/**
+ * SHA-1 Implementation
+ * https://github.com/jamiebuilds/havetheybeenpwned/blob/master/lib/sha1-browser.js
+ */
 ("use strict");
 
 function bufferToHex(buffer) {
@@ -276,3 +243,36 @@ function sha1(str) {
     .digest("SHA-1", buffer)
     .then((hash) => bufferToHex(hash));
 }
+
+/**************************************************************/
+/*                      HELPER FUNCTIONS                      */
+/**************************************************************/
+
+// Displays data in a specified <div>
+const showData = (msg) => {
+  $(".responseBody").html(msg);
+};
+
+// Returns true if email radio field is selected
+const emailSelected = () => {
+  return $("#email").prop("checked");
+};
+
+// Returns true if password radio field is selected
+const passwordSelected = () => {
+  return $("#password").prop("checked");
+};
+
+// Returns true if input text field is empty
+const inputEmpty = () => {
+  return $("#entry").val() == "" || $("#entry").val() == undefined;
+};
+
+// Returns true if a string is a valid email
+const validateEmail = (email) => {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+};
+
+const AWSApiGateway =
+  "https://s7kbw14q30.execute-api.us-east-2.amazonaws.com/production/";

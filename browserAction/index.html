@@ -1,29 +1,69 @@
 <!DOCTYPE html>
 <html lang="en" class="popup">
   <head>
-    <meta charset="UTF-8">
-    <link href="style.css" rel="stylesheet" />
-  </head>
-  <body class="popup">
-      <h1 class="title">TRACE</h1>
-    
-      <!-- Tab links -->
-      <div class="tab">
-        <button class="tablinks" id="add-site">Manage sites</button>
-        <button class="tablinks" id="pwnd">Account security</button>
-      </div>
-
-      <!-- Tab content -->
-      <div id="London" class="tabcontent">
-        <h3>London</h3>
-        <p>London is the capital city of England.</p>
-      </div>
-
-      <div id="Paris" class="tabcontent">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>
-      </div>
-
+    <meta charset="UTF-8" />
+    <script src="haveibeenpwnd/hibp.js"></script>
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
     <script src="script.js"></script>
+
+    <link rel="stylesheet" href="lib/bootstrap.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap");
+    </style>
+  </head>
+
+  <body class="popup ">
+    <h1 class="title">TRACE</h1>
+
+    <!-- Tab links -->
+    <div class="tab">
+      <button class="tablinks" id="add-site">Manage sites</button>
+      <button class="tablinks" id="pwnd">Account security</button>
+    </div>
+
+    <!------------------------- Place Tabs Below ------------------------->
+
+    <!-- Placeholder Tab -->
+    <div id="London" class="tabcontent">
+      <h3>London</h3>
+      <p>London is the capital city of England.</p>
+    </div>
+
+    <!-- Have I Been Pwnd? -->
+    <div id="pwndTab" class="pwndTab tabcontent">
+      <h3 class="pwndText">Is Your Data Safe?</h3>
+      <form id="form">
+        <h5 class="pwndText">First, select one of the following:</h5>
+
+        <input type="radio" id="email" name="typeChoice" />
+        <label for="email" class="pwndText">Email</label>
+        <br />
+        <input type="radio" id="password" name="typeChoice" />
+        <label for="password" class="pwndText">Password</label>
+        <br />
+        <br />
+
+        <input
+          id="entry"
+          name="entry"
+          class="pwndText"
+          placeholder="Enter Email/Password"
+          disabled
+        />
+        <br />
+        <br />
+
+        <button type="button" id="search" class="btn btn-dark" disabled>
+          Check for breaches!
+        </button>
+      </form>
+
+      <br />
+      <div class="responseBody">
+      </div>
+    </div>
   </body>
 </html>
