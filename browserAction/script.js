@@ -14,7 +14,6 @@
 
     hibpInit()
 
-    // Start on 'Manage Sites' tab
     openTab(null, "London")
   }
 })(window, document, undefined);
@@ -32,7 +31,9 @@ function openTab(e, tabName) {
 
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "block";
-  e.currentTarget.className += " active";
+  if (e) {
+    e.currentTarget.className += " active";
+  }
 
   // Clear possible HaveIBeenPwnd background styling
   $("*").removeClass("pwnd");
