@@ -1,8 +1,7 @@
 
 var strip_cors = true;
 
-// TODO: Add our site when deployed
-const valid_sites = new RegExp('http://localhost/*');
+const valid_sites = new RegExp('http://localhost/*|https://tracedigital.tk/*');
 
 // Keep track of redirected urls - THIS IS A HACK FOR NOW
 var redirected_urls = [];
