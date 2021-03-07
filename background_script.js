@@ -12,24 +12,25 @@ chrome.webRequest.onHeadersReceived.addListener(
 
         if (strip_cors) {
             console.log(details.url);
+            // Check if site is getting redirected
+            if (details.statusCode < 400 && details.statusCode >= 300) {
+                console.log("This site is redirecting to another URL");
+                var location = getLocation(details);
+                if (location) {
+                    // Add location to array to check for next time
+                    redirected_urls.push(location);
+                }
+            }
+
             // Check if redirected url
             if (redirected_urls.includes(details.url)) {
                 console.log("This is a redirected URL");
                 // Set access-control-allow-origin header to wildcard for redirected urls
                 // because initial initiator is immutable but origin will change causing CORS error
                 changeHeaders(details, '*', 'accept, authorization, content-type, Referer, User-Agent', 'true');
-                // Remove this url from the list of redirected urls
+                // Remove this url from the array of redirected urls
                 redirected_urls.splice(redirected_urls.indexOf(details.url), 1);
-            }
-            else {
-                // Check status code for redirects
-                if (details.statusCode < 400 && details.statusCode >= 300) {
-                    console.log("This site is redirecting to another URL");
-                    var location = getLocation(details);
-                    if (location) {
-                        redirected_urls.push(location);
-                    }
-                }
+            } else {
                 changeHeaders(details, details.initiator, 'accept, authorization, content-type, Referer, User-Agent', 'true');
             }
         }
