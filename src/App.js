@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -6,6 +6,8 @@ import 'react-tabs/style/react-tabs.css';
 
 import { Form, Label, Input, FormGroup, Row, Col, Button } from 'reactstrap';
 import { tags } from 'trace-search';
+
+import HaveIBeenPwnd from './components/HaveIBeenPwnd.js'
 
 import mainLogo from'./icon.png';
 
@@ -64,14 +66,14 @@ const App = (props) => {
 
   return (
     <div className="App">
-      <img className="logo" src={mainLogo}></img>
+      <img className="logo" alt="TRACE logo" src={mainLogo}></img>
        <Tabs>
         <TabList>
           <Tab style={{fontSize: 14}}>Manage sites</Tab>
           <Tab style={{fontSize: 14}}>Account security</Tab>
         </TabList>
 
-        <TabPanel>
+        <TabPanel className="manageSites">
           
           <h5 className="tab-title">Add new site</h5>
           <div className="form-container">
@@ -122,7 +124,7 @@ const App = (props) => {
 
         {/*'Have I Been Pwnd?' tab*/}
         <TabPanel>
-          <h2>Is your data safe?</h2>
+          <HaveIBeenPwnd className="haveibeenpwnd" />
         </TabPanel>
       </Tabs>
     </div>

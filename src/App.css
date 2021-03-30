@@ -1,5 +1,9 @@
 .App {
+  font-family: "Roboto", sans-serif;
   text-align: center;
+}
+
+.manageSites {
 }
 
 .form-container {
@@ -51,4 +55,23 @@
 
 .error-not-visible {
   display: none;
+}
+
+
+/** HAVE I BEEN PWND TAB **/
+
+.pwndTab {
+  margin: 20px;
+}
+
+.responseBody ul li {
+  list-style: none;
+}
+
+.pwnd {
+  color: red;
+}
+
+.notPwnd {
+  color: green
 }
