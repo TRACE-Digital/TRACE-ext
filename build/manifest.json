@@ -1,0 +1,39 @@
+{
+  "name": "TRACE",
+  "description": "Trace your digital dootprint",
+  "version": "1.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_icon": {
+      "32": "icon.png"
+    },
+    "default_popup": "index.html",
+    "default_title": "Open the popup"
+  },
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "*://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "./static/js/background_script.js"
+    ]
+  },
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "./static/js/content_script.js"
+      ]
+    }
+  ]
+}

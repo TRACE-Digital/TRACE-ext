@@ -1,0 +1,54 @@
+.App {
+  text-align: center;
+}
+
+.form-container {
+  width: 400px;
+  text-align: left;
+  margin: 0 auto;
+}
+
+.logo {
+  margin-top: 10px;
+}
+
+.tab-title {
+  margin-bottom: 0.2em;
+}
+
+.logo {
+  padding-top: 10px;
+}
+
+.form-group {
+  margin-bottom: 0.5em !important;
+  padding-right: 0px !important;
+}
+
+.label {
+  font-size: 14px;
+}
+
+#input {
+  font-size: 12px;
+}
+
+.checkbox-name {
+  margin-left:2.5%;
+  text-align:center;
+  color: black;
+  font-weight: 100;
+  font-size: 14px;
+}
+
+.add-button-container {
+  margin-top: 20px;
+}
+
+.error-message-visible {
+  color: red;
+}
+
+.error-not-visible {
+  display: none;
+}
