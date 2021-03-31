@@ -5,41 +5,74 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { Form, Label, Input, FormGroup, Row, Col, Button } from 'reactstrap';
-import { tags } from 'trace-search';
+import { tags, ManualAccount } from 'trace-search';
 
 import mainLogo from'./icon.png';
 
 const App = (props) => {
   const [categories, setCategories] = useState([]);
   const [username, setUsername] = useState('');
-  const [site, setSite] = useState('');
+  const [siteName, setSiteName] = useState('');
   const [url, setUrl] = useState('');
   const [showError, setShowError] = useState(false);
+  const [dbError, setDbError] = useState(null);
 
   function onSiteChange(e) {
       setShowError(false);
-      setSite(e);
+      setDbError(null);
+      setSiteName(e);
   }
 
   function onUsernameChange(e) {
       setShowError(false);
+      setDbError(null);
       setUsername(e); 
   }
 
   function onUrlChange(e) {
       setShowError(false);
+      setDbError(null);
       setUrl(e);
   }
 
-  function handleSubmit(e) {
-      console.log(site);
+  function clearInputs() {
+    var inputs = document.getElementsByTagName('input');
+
+    for(var i = 0; i < inputs.length; i++) {
+        if(inputs[i].type.toLowerCase() == 'text') {
+          inputs[i].value = '';
+        } else if(inputs[i].type.toLowerCase() == 'checkbox') {
+          inputs[i].checked = false;
+        }
+    }
+
+    setSiteName('');
+    setUsername('');
+    setUrl('');
+    setCategories([]);
+}
+
+  async function handleSubmit(e) {
+      console.log(siteName);
       console.log(username);
       console.log(url);
 
-    if (site && username && url) {
-        // Add to database
+    if (siteName && username && url) {
         setShowError(false);
-        props.closePopup();
+        // Add to database
+        const manualSite = { url: url, name: siteName, tags: categories };
+        const manualAccount = new ManualAccount(manualSite, username);
+
+      try {
+        await manualAccount.save();
+        clearInputs();
+      } catch (e) {
+        if (e.message === "Document update conflict") {
+          setDbError("Account already exists");
+        } else {
+          setDbError(e.message);
+        }
+      }
     }
     else {
         setShowError(true);
@@ -116,6 +149,9 @@ const App = (props) => {
                 </Button>
                 <div className={showError ? "error-message-visible" : "error-not-visible"}>
                     Warning: required fields are empty
+                </div>
+                <div className={dbError ? "error-message-visible" : "error-not-visible"}>
+                    { dbError ? "Error: " + dbError : ""}
                 </div>
             </div>
         </TabPanel>
