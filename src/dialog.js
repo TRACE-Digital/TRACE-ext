@@ -39,20 +39,20 @@ document.getElementById("save").addEventListener('click',
         // chrome.tabs.sendMessage(tab[0].id, { "username": username, "site": siteName, "url": url });
         // chrome.runtime.sendMessage({type:'database_info', username: username, site: siteName, url: url});
         
-        // const manualSite = { url: url, name: siteName, tags: [] };
-        // const manualAccount = new ManualAccount(manualSite, username);
+        const manualSite = { url: url, name: siteName, tags: [] };
+        const manualAccount = new window.TraceSearch.ManualAccount(manualSite, username);
 
-        // // Add to database
-        // try {
-        //     await manualAccount.save();
-        //     window.close();
-        // } catch (e) {
-        //     if (e.message === "Document update conflict") {
-        //         document.getElementById('error').innerHTML = "Account already exists";
-        //     } else {
-        //         document.getElementById('error').innerHTML = e.message;
-        //     }
-        // }
+        // Add to database
+        try {
+            await manualAccount.save();
+            // window.close();
+        } catch (e) {
+            if (e.message === "Document update conflict") {
+                document.getElementById('error').innerHTML = "Account already exists";
+            } else {
+                document.getElementById('error').innerHTML = e.message;
+            }
+        }
     }, false
 );
 
