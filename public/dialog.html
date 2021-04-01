@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="dialog.css">
+        <title>New site detected</title>
+    </head>
+    <body style="text-align:center">
+        <img src="icon.png"></img>
+        <h3>Add to TRACE?</h3>
+        <p>Please verify the information below</p>
+    
+        <div style="width: 260px; margin: 0 auto">
+        <form id="form"></form>
+            <div className="form-group" style="text-align: left">
+            <div>
+                <label for="username">Username:</label>
+                <input id="username" type="text" style="width: 260px">
+            </div>
+
+            <br/>
+
+            <div>
+                <label for="siteName">Site Name:</label>
+                <input id="siteName" type="text" style="width: 260px">
+            </div>
+
+            <br/>
+
+            <div>
+                <label for="url">Account URL:</label>
+                <input id="url" type="text" style="width: 260px">
+            </div>
+
+            <br/>
+            </div>
+            <input type="submit" id="save" value="Save">
+            <input type="submit" id="cancel" value="Cancel">
+        </form>
+        <div className=error></div>
+        </div>
+        <script src="trace-search.min.js"></script>
+        <script type="module" src="static/js/dialog.js"></script>
+    </body>
+</html>
