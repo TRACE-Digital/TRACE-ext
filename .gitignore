@@ -108,3 +108,6 @@ dist
 
 # API Key for HaveIBeenPwnd
 secrets.json
+
+# compiled files
+./build
