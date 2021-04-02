@@ -8,7 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { Form, Label, Input, FormGroup, Row, Col, Button } from 'reactstrap';
-import { tags, ManualAccount } from 'trace-search';
+import { tags, ManualAccount, getDb, setRemoteUser, setupReplication } from 'trace-search';
 
 import HaveIBeenPwnd from './components/HaveIBeenPwnd.js'
 
@@ -108,6 +108,11 @@ const App = (props) => {
         // Add to database
         const manualSite = { url: url, name: siteName, tags: categories };
         const manualAccount = new ManualAccount(manualSite, username);
+
+        await setRemoteUser(await Auth.currentUserPoolUser());
+        await setupReplication();
+
+        await manualAccount.save();
 
       try {
         await manualAccount.save();
