@@ -4,6 +4,7 @@ const valid_sites = new RegExp('http://localhost/*|https://tracedigital.tk/*');
 
 // Keep track of redirected urls - THIS IS A HACK
 var redirected_urls = [];
+var ACCEPTED_HEADERS = ['accept', 'authorization', 'content-type', 'Referer', 'User-Agent', 'auth-token', 'x-amz-user-agent'];
 
 chrome.runtime.onMessage.addListener((request) => {
     // get username from the content script
@@ -71,7 +72,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                 // console.log("This is a redirected URL");
                 // Set access-control-allow-origin header to wildcard for redirected urls
                 // because initial initiator is immutable but origin will change causing CORS error
-                changeHeaders(details, '*', 'accept, authorization, content-type, Referer, User-Agent', 'true');
+                changeHeaders(details, '*', ACCEPTED_HEADERS.join(','), 'true');
                 // Remove this url from the array of redirected urls
                 redirected_urls.splice(redirected_urls.indexOf(details.url), 1);
             } else {
