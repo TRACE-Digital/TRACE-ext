@@ -35,7 +35,10 @@ const App = (props) => {
         const user = await Auth.currentUserPoolUser();
         console.log(user);
         try {
-          const smallerCognitoUser = user.signInUserSession.idToken
+          const smallerCognitoUser = {};
+          smallerCognitoUser.attributes = user.attributes;
+          smallerCognitoUser.signInUserSession = user.signInUserSession.idToken;
+
           localStorage.setItem("trace-user", JSON.stringify(smallerCognitoUser, null, 0));
           console.log(JSON.stringify(smallerCognitoUser, null, 0))
         } catch (e) {
@@ -69,7 +72,7 @@ const App = (props) => {
   function onUsernameChange(e) {
       setShowError(false);
       setDbError(null);
-      setUsername(e); 
+      setUsername(e);
   }
 
   function onUrlChange(e) {
@@ -153,7 +156,7 @@ const App = (props) => {
           </TabList>
 
           <TabPanel>
-            
+
             <h5 className="tab-title">Add new site</h5>
             <div className="form-container">
             <Form>

@@ -20,6 +20,8 @@ async function checkIfSiteExists() {
     let traceDb;
     try {
         traceDb = await window.TraceSearch.getDb();
+        await window.TraceSearch.setRemoteUser(traceUser);
+        await window.TraceSearch.setupReplication();
     } catch (err) {
         console.log(err);
     }
@@ -38,7 +40,7 @@ async function checkIfSiteExists() {
     }
 }
 
-document.getElementById("save").addEventListener('click', 
+document.getElementById("save").addEventListener('click',
     async function(e) {
         let username = document.getElementById("username").value;
         let siteName = document.getElementById("siteName").value;
@@ -47,7 +49,7 @@ document.getElementById("save").addEventListener('click',
         console.log(username);
         console.log(siteName);
         console.log(url);
-        
+
         const manualSite = { url: url, name: siteName, tags: [] };
         const manualAccount = new window.TraceSearch.ManualAccount(manualSite, username);
 
@@ -65,7 +67,7 @@ document.getElementById("save").addEventListener('click',
     }, false
 );
 
-document.getElementById("cancel").addEventListener('click', 
+document.getElementById("cancel").addEventListener('click',
     function(e) {
         window.close();
     }, false
