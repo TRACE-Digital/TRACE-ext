@@ -110,4 +110,4 @@ dist
 secrets.json
 
 # compiled files
-build/
+./build
