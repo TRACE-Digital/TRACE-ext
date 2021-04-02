@@ -1,0 +1,21 @@
+.logo {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.login {
+    width: 450px;
+    height: 640px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* text-align: center; */
+}
+
+.card {
+    margin: 0 auto;
+    border: none !important;
+    width: 25rem;
+}

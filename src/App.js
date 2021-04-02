@@ -49,6 +49,17 @@ const App = (props) => {
     })();
   });
 
+  async function handleLogOut(e) {
+    try {
+      await Auth.signOut();
+      setIsLoggedIn(false);
+    } catch (error) {
+      Auth.error = error;
+      console.log('error signing out', error.message);
+      return error.message;
+    }
+  }
+
   function onSiteChange(e) {
       setShowError(false);
       setDbError(null);
@@ -110,6 +121,10 @@ const App = (props) => {
         setShowError(true);
     }
     console.log(showError);
+  }
+
+  function handleLogin(e) {
+      setIsLoggedIn(true);
   }
 
   function handleClickCheckbox(e) {
@@ -180,6 +195,7 @@ const App = (props) => {
                   <Button style={{fontSize: 14}} onClick={handleSubmit}>
                       Add to Dashboard
                   </Button>
+                  <a onClick={handleLogOut} style={{cursor: 'pointer', textDecoration: 'underline', paddingLeft: 10, fontSize: 14 }}>Log out</a>
                   <div className={showError ? "error-message-visible" : "error-not-visible"}>
                       Warning: required fields are empty
                   </div>
@@ -198,7 +214,7 @@ const App = (props) => {
     );
   } else {
     return (
-      <Login/>
+      <Login onLogin={handleLogin} />
     );
   }
 }

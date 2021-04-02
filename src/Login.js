@@ -1,14 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import './Login.css';
+
 import { Auth } from 'aws-amplify';
-
 import { Card, CardImg, CardBody, Button, Form, FormGroup, Input } from 'reactstrap';
-
 import mainLogo from'./icon.png';
 
 async function signIn(username, password) {
     try {
         await Auth.signIn(username, password);
-        return null;
     } catch (error) {
       Auth.error = error;
       console.log('error signing in', error.message);
@@ -16,7 +15,8 @@ async function signIn(username, password) {
     }
 }
 
-function Login() {
+const Login = (props) => {
+  let btnRef = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -42,24 +42,39 @@ function Login() {
     </>
   )
 
+  function handleLogIn(e) {
+    if(btnRef.current){
+      btnRef.current.setAttribute("disabled", "disabled");
+    }
+  }
+
   return (
     <div className="login">
         {/* Log In */}
-        <Card style={{width: '30rem'}}>
-            <CardImg top src={mainLogo} alt="trace logo"/>
+        <Card>
+            <div className="logo">
+              <CardImg top src={mainLogo} alt="trace logo" />
+            </div>
             <CardBody>
                 <Form id='sign-in-form'  onSubmit={async (e) => {
                   e.preventDefault();
                   let localError = false;
                   localError = await signIn(email, password);
                   setError(localError);
+                  if (!localError) {
+                    console.log("no error");
+                    props.onLogin(true);
+                  };
                 }}>
                   {loginFields}
                 </Form>
-                <Button color="primary" block type="submit" form='sign-in-form' >
+                <Button color="primary" block type="submit" form='sign-in-form' onClick={handleLogIn}>
                   Log In
                 </Button>
                 <br/>
+                <a href="https://tracedigital.tk/signup" target="_blank">
+                    Don't have an account? Create Account
+                </a>
             </CardBody>
         </Card>
     </div>

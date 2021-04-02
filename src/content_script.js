@@ -55,7 +55,9 @@ window.addEventListener('submit',
         // console.log(username);
         if (username) { 
             console.log(username.value);
-            chrome.runtime.sendMessage({type:'request_username', username: username.value, site: window.location.hostname});
+            if (!window.location.href.includes('chrome-extension://')) {
+                chrome.runtime.sendMessage({type:'request_username', username: username.value, site: window.location.hostname});
+            }
         }
     }, false
 );

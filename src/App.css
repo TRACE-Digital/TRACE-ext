@@ -1,9 +1,11 @@
 .App {
   font-family: "Roboto", sans-serif;
   text-align: center;
-}
-
-.manageSites {
+  width: 450px;
+  height: 600px;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
 }
 
 .form-container {
@@ -14,6 +16,7 @@
 
 .tab-title {
   margin-bottom: 0.2em;
+  font-size: 18px;
 }
 
 .form-group {
@@ -38,15 +41,17 @@
 }
 
 .add-button-container {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .error-message-visible {
   color: red;
+  font-size: 14px;
 }
 
 .error-not-visible {
   display: none;
+  font-size: 14px;
 }
 
 
