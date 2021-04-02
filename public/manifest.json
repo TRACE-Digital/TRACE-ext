@@ -27,6 +27,17 @@
   },
   "content_scripts": [
     {
+      "run_at": "document_start",
+      "matches": [
+        "*://localhost/*",
+        "*://localhost:*/*",
+        "*://tracedigital.tk/*"
+      ],
+      "js": [
+        "window_hook.js"
+      ]
+    },
+    {
       "run_at": "document_end",
       "matches": [
         "*://*/*"
