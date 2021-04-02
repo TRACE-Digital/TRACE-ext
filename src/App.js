@@ -37,7 +37,7 @@ const App = (props) => {
         try {
           const smallerCognitoUser = {};
           smallerCognitoUser.attributes = user.attributes;
-          smallerCognitoUser.signInUserSession = user.signInUserSession.idToken;
+          smallerCognitoUser.signInUserSession = user.signInUserSession;
 
           localStorage.setItem("trace-user", JSON.stringify(smallerCognitoUser, null, 0));
           console.log(JSON.stringify(smallerCognitoUser, null, 0))

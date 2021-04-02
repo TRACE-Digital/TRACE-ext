@@ -136,8 +136,10 @@ function getLocation(details) {
 
 // Check if request came from a valid site
 function checkInitiator(details) {
+    return false;
+
     // console.log(details.initiator);
-    if (valid_sites.test(details.initiator)) {
+    if (valid_sites.test(details.initiator) && details.initiator && !details.initiator.includes('login') && !details.initiator.includes('signup')) {
         return true;
     }
     return false;

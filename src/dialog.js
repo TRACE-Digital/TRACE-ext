@@ -15,6 +15,7 @@ document.getElementById("url").value = window.opener.trace_site.concat("/", trim
 
 // Getting user info
 let traceUser = JSON.parse(localStorage.getItem("trace-user"));
+console.log(traceUser);
 
 async function checkIfSiteExists() {
     let traceDb;
@@ -56,7 +57,7 @@ document.getElementById("save").addEventListener('click',
         // Add to database
         try {
             await manualAccount.save();
-            window.close();
+            doClose();
         } catch (e) {
             if (e.message === "Document update conflict") {
                 document.getElementById('error').innerHTML = "Account already exists";
@@ -67,8 +68,17 @@ document.getElementById("save").addEventListener('click',
     }, false
 );
 
-document.getElementById("cancel").addEventListener('click',
-    function(e) {
+function doClose(e) {
+    document.getElementById("save").value = 'Saving...'
+    document.getElementById("save").disabled = 'true';
+    document.getElementById("cancel").disabled = 'true';
+
+    setTimeout(() => {
+        console.log('Closing');
         window.close();
-    }, false
+    }, 3000);
+}
+
+document.getElementById("cancel").addEventListener('click',
+   doClose, false
 );
