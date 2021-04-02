@@ -191,7 +191,7 @@ const App = (props) => {
 
           {/*'Have I Been Pwnd?' tab*/}
           <TabPanel>
-            <h2>Is your data safe?</h2>
+            <HaveIBeenPwnd className="haveibeenpwnd" />
           </TabPanel>
         </Tabs>
       </div>
