@@ -2,9 +2,8 @@
 
 // const Trace = require('trace-search');
 
-let username = window.opener.trace_username.includes('@') ? 
-    window.opener.trace_username.substring(0, window.opener.trace_username.indexOf('@')) : 
-    window.opener.trace_username;
+let username = window.opener.trace_username;
+let trim_username = username.includes('@') ? username.substring(0, username.indexOf('@')) : username;
 let site = window.opener.trace_site;
 let account = window.opener.trace_site.concat("/", username);
 
@@ -12,34 +11,30 @@ checkIfSiteExists();
 
 document.getElementById("username").value = window.opener.trace_username;
 document.getElementById("siteName").value = window.opener.trace_site;
-document.getElementById("url").value = window.opener.trace_site.concat("/", username);
+document.getElementById("url").value = window.opener.trace_site.concat("/", trim_username);
 
 // Getting user info
 let traceUser = JSON.parse(localStorage.getItem("trace-user"));
 
-async function getDb() {
+async function checkIfSiteExists() {
+    let traceDb;
     try {
-        let db = await window.TraceSearch.getDb();
-        console.log(db);
-
-        return db;
+        traceDb = await window.TraceSearch.getDb();
     } catch (err) {
         console.log(err);
     }
-}
-
-async function checkIfSiteExists() {
-    const traceDb = getDb();
+    console.log(traceDb);
 
     const manualSite = { url: account, name: site, tags: [] };
     const manualAccount = new window.TraceSearch.ManualAccount(manualSite, username);
 
-    // Add to database
+    // Check if it exists in database
     try {
         await traceDb.get(manualAccount.id);
-    } catch (e) {
         console.log("Account exists");
         window.close();
+    } catch (e) {
+        console.log(e);
     }
 }
 
