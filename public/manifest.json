@@ -34,7 +34,7 @@
         "*://tracedigital.tk/*"
       ],
       "js": [
-        "window_hook.js"
+        "./static/js/window_hook.js"
       ]
     },
     {

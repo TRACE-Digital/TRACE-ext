@@ -7,6 +7,7 @@ module.exports = {
                     main: [env === 'development' &&
                     require.resolve('react-dev-utils/webpackHotDevClient'),paths.appIndexJs].filter(Boolean),
                     content_script: './src/content_script.js',
+                    window_hook: './src/window_hook.js',
                     background_script: './src/background_script.js',
                     dialog: './src/dialog.js',
                     Login: './src/Login.js',
