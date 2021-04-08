@@ -18,3 +18,14 @@
     border: none !important;
     width: 25rem;
 }
+
+.error-message-visible {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+  
+.error-not-visible {
+    display: none;
+    font-size: 14px;
+}

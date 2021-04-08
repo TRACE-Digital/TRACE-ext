@@ -56,6 +56,9 @@ const Login = (props) => {
               <CardImg top src={mainLogo} alt="trace logo" />
             </div>
             <CardBody>
+                <div className={error ? "error-message-visible" : "error-not-visible"}>
+                    { error ? "Error: " + error : ""}
+                </div>
                 <Form id='sign-in-form'  onSubmit={async (e) => {
                   e.preventDefault();
                   let localError = false;
