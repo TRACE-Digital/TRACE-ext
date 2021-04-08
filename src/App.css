@@ -8,6 +8,11 @@
   justify-content: center; */
 }
 
+.ext-logo {
+  width: 350px;
+  margin: 30px;
+}
+
 .form-container {
   width: 400px;
   text-align: left;

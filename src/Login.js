@@ -3,7 +3,7 @@ import './Login.css';
 
 import { Auth } from 'aws-amplify';
 import { Card, CardImg, CardBody, Button, Form, FormGroup, Input } from 'reactstrap';
-import mainLogo from'./icon.png';
+import mainLogo from'./trace.png';
 
 async function signIn(username, password) {
     try {

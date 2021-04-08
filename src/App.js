@@ -12,7 +12,7 @@ import { tags, ManualAccount, getDb, setRemoteUser, setupReplication } from 'tra
 
 import HaveIBeenPwnd from './components/HaveIBeenPwnd.js'
 
-import mainLogo from'./icon.png';
+import mainLogo from'./trace.png';
 import Login from './Login.js';
 import configuration from './amplify_config.js';
 
@@ -153,7 +153,7 @@ const App = (props) => {
   if (isLoggedIn) {
     return (
       <div className="App">
-        <img className="logo" src={mainLogo}></img>
+        <img className="ext-logo" src={mainLogo}></img>
         <Tabs>
           <TabList>
             <Tab style={{fontSize: 14}}>Manage sites</Tab>
@@ -181,7 +181,7 @@ const App = (props) => {
               </Row>
                   <FormGroup className="form-group">
                       <Label for="siteUrl" className="label">Account URL</Label><span className="asterisk">*</span>
-                      <Input type="text" name="url" id="input" placeholder="eg. www.instagram.com/coraychan" onChange={(e) => onUrlChange(`${e.target.value}`)}/>
+                      <Input type="text" name="url" id="input" placeholder="eg. https://www.instagram.com/coraychan" onChange={(e) => onUrlChange(`${e.target.value}`)}/>
                   </FormGroup>
                   <Label for="tags" className="label">Tags</Label>
                   <Row>
