@@ -11,7 +11,8 @@ module.exports = {
                     background_script: './src/background_script.js',
                     dialog: './src/dialog.js',
                     Login: './src/Login.js',
-                    amplify_config: './src/amplify_config.js'
+                    amplify_config: './src/amplify_config.js',
+                    options: './src/options.js'
                 },
                 output: {
                     ...webpackConfig.output,

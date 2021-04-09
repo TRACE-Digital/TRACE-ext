@@ -10,7 +10,12 @@
 
 .ext-logo {
   width: 350px;
-  margin: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.toggleButton {
+  margin: 10px !important;
 }
 
 .form-container {

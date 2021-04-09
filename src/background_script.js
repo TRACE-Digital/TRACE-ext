@@ -1,3 +1,5 @@
+// Default value is true
+// User can turn this off using options page
 var strip_cors = true;
 
 const valid_sites = new RegExp('http://localhost/*|https://tracedigital.tk/*');
@@ -49,13 +51,22 @@ chrome.runtime.onMessage.addListener((request) => {
         window.trace_username = request.username;
         window.trace_site = request.site;
     }
+    else if (request.type === "disable_cors" && request.message) {
+        console.log("DISABLE CORS: " + request.message);
+        if (request.message === "false") {
+            strip_cors = false;
+        } else if (request.message === "true") {
+            strip_cors = true;
+        }
+    }
 });
 
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
-        strip_cors = checkInitiator(details);
+        let valid_initiator = checkInitiator(details);
 
-        if (strip_cors) {
+        console.log(strip_cors);
+        if (valid_initiator && strip_cors) {
             // console.log(details.url);
             // Check if site is getting redirected
             if (details.statusCode < 400 && details.statusCode >= 300) {
@@ -134,10 +145,8 @@ function getLocation(details) {
     return null;
 }
 
-// Check if request came from a valid site
+// Check if request came from a site we want to strip cors from
 function checkInitiator(details) {
-    return false;
-
     // console.log(details.initiator);
     if (valid_sites.test(details.initiator) && details.initiator && !details.initiator.includes('login') && !details.initiator.includes('signup')) {
         return true;
