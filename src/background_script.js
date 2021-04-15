@@ -14,30 +14,6 @@ chrome.runtime.onMessage.addListener((request) => {
     console.log(request.site);
 
     if (request.type === "request_username" && request.username) {
-        // set global variable username to message from content script
-        // chrome.tabs.create({
-        //     url: chrome.extension.getURL('dialog.html'),
-        //     active: false
-        // }, function(tab) {
-        //     // After the tab has been created, open a window to inject the tab
-        //     chrome.windows.create({
-        //         tabId: tab.id,
-        //         type: 'popup',
-        //         focused: true,
-        //         height: 450,
-        //         width: 400,
-        //         setSelfAsOpener: true
-        //     });
-
-        //     chrome.tabs.onUpdated.addListener(function(id, changeInfo, thisTab) {
-        //         if (changeInfo.status == 'complete') {
-        //             chrome.tabs.query({ active: true }, function(tabs) {
-        //                 chrome.tabs.sendMessage(tab.id, { "username": request.username, "site": request.site });
-        //             })
-        //         }
-        //     });
-        // });
-
         chrome.windows.create({
             url: chrome.extension.getURL('dialog.html'),
             type: 'popup',
@@ -95,11 +71,11 @@ chrome.webRequest.onHeadersReceived.addListener(
                 // console.log("This is a redirected URL");
                 // Set access-control-allow-origin header to wildcard for redirected urls
                 // because initial initiator is immutable but origin will change causing CORS error
-                changeHeaders(details, '*', ACCEPTED_HEADERS.join(','), 'true');
+                changeHeaders(details, '*', ACCEPTED_HEADERS.join(','), 'false');
                 // Remove this url from the array of redirected urls
                 redirected_urls.splice(redirected_urls.indexOf(details.url), 1);
             } else {
-                changeHeaders(details, details.initiator, ACCEPTED_HEADERS.join(','));
+                changeHeaders(details, details.initiator, ACCEPTED_HEADERS.join(','), 'true');
             }
         }
         // console.log(details);
