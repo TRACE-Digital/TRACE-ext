@@ -6,7 +6,7 @@ const valid_sites = new RegExp('http://localhost/*|https://tracedigital.tk/*');
 
 // Keep track of redirected urls - THIS IS A HACK
 var redirected_urls = [];
-var ACCEPTED_HEADERS = ['accept', 'authorization', 'content-type', 'Referer', 'User-Agent', 'auth-token', 'x-amz-user-agent'];
+var ACCEPTED_HEADERS = ['accept', 'authorization', 'content-type', 'Referer', 'User-Agent', 'auth-token', 'x-amz-user-agent','x-amz-target'];
 
 chrome.runtime.onMessage.addListener((request) => {
     // get username from the content script
@@ -52,7 +52,6 @@ chrome.runtime.onMessage.addListener((request) => {
         window.trace_site = request.site;
     }
     else if (request.type === "disable_cors" && request.message) {
-        console.log("DISABLE CORS: " + request.message);
         if (request.message === "false") {
             strip_cors = false;
         } else if (request.message === "true") {
@@ -61,11 +60,24 @@ chrome.runtime.onMessage.addListener((request) => {
     }
 });
 
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function (details) {
+        console.log("Request: ");
+        console.log(details);
+    },
+    {
+        urls: ['<all_urls>'],
+        types: ['xmlhttprequest', 'other']//,'stylesheet','script','image','object','xmlhttprequest','other']
+    },
+    ["blocking", "requestHeaders"]
+);
+
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
+        console.log("Response: ");
+        console.log(details);
         let valid_initiator = checkInitiator(details);
 
-        console.log(strip_cors);
         if (valid_initiator && strip_cors) {
             // console.log(details.url);
             // Check if site is getting redirected
@@ -87,7 +99,7 @@ chrome.webRequest.onHeadersReceived.addListener(
                 // Remove this url from the array of redirected urls
                 redirected_urls.splice(redirected_urls.indexOf(details.url), 1);
             } else {
-                changeHeaders(details, details.initiator, 'accept, authorization, content-type, Referer, User-Agent', 'true');
+                changeHeaders(details, details.initiator, ACCEPTED_HEADERS.join(','));
             }
         }
         // console.log(details);
@@ -147,8 +159,8 @@ function getLocation(details) {
 
 // Check if request came from a site we want to strip cors from
 function checkInitiator(details) {
-    // console.log(details.initiator);
-    if (valid_sites.test(details.initiator) && details.initiator && !details.initiator.includes('login') && !details.initiator.includes('signup')) {
+    console.log(details.initiator);
+    if (valid_sites.test(details.initiator)) {
         return true;
     }
     return false;
