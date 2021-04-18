@@ -55,6 +55,7 @@ window.addEventListener('submit',
         // console.log(username);
         if (username) { 
             console.log(username.value);
+            // TODO: Change to all browsers
             if (!window.location.href.includes('chrome-extension://')) {
                 chrome.runtime.sendMessage({type:'request_username', username: username.value, site: window.location.hostname});
             }
@@ -93,8 +94,8 @@ const verifySignInOrSignUpPage = () => {
 
     // check inputs
     for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].type.toLowerCase() == 'submit') {
-            // console.log(inputs[i].value.toLowerCase());
+        if (inputs[i].type.toLowerCase() === 'submit') {
+            console.log(inputs[i].value.toLowerCase());
             if (inputs[i].value && signInRegex.test(inputs[i].value.toLowerCase())) {
                 console.log("true");
                 return true;
@@ -103,11 +104,11 @@ const verifySignInOrSignUpPage = () => {
     }
 
     // check buttons
-    for (var i = 0; i < buttons.length; i++) {
-        // console.log(buttons[i].className);
-        if (buttons[i].type.toLowerCase() == 'submit') {
-            // console.log(buttons[i].innerHTML.trim().toLowerCase());
-            if (buttons[i].innerHTML && signInRegex.test(buttons[i].innerHTML.trim().toLowerCase())) {
+    for (var j = 0; j < buttons.length; j++) {
+        console.log(buttons[j].type);
+        if (buttons[j].type.toLowerCase() === 'submit') {
+            console.log(buttons[j].innerHTML.trim().toLowerCase());
+            if (buttons[j].innerHTML && signInRegex.test(buttons[j].innerHTML.trim().toLowerCase())) {
                 console.log("true");
                 return true;
             }
@@ -140,11 +141,11 @@ const findUsernameField = () => {
 }
 
 // Not used, might be expanded later for password manager
-const findPasswordField = () => {
-    var inputs = document.getElementsByTagName('input');
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].type.toLowerCase() == 'password') {
-            console.log(inputs[i].value);
-        }
-    }
-}
+// const findPasswordField = () => {
+//     var inputs = document.getElementsByTagName('input');
+//     for (var i = 0; i < inputs.length; i++) {
+//         if (inputs[i].type.toLowerCase() == 'password') {
+//             console.log(inputs[i].value);
+//         }
+//     }
+// }

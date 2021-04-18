@@ -14,14 +14,21 @@ chrome.runtime.onMessage.addListener((request) => {
     console.log(request.site);
 
     if (request.type === "request_username" && request.username) {
+        // TODO: make popup from extension icon, not a new window
         chrome.windows.create({
-            url: chrome.extension.getURL('dialog.html'),
+            url: chrome.runtime.getURL('dialog.html'),
             type: 'popup',
             focused: true,
             height: 450,
             width: 400,
             setSelfAsOpener: true
         });
+
+        // var windowFeatures = "width=400, height=450";
+        // var newWindow = window.open(chrome.runtime.getURL('dialog.html'), "Trace", windowFeatures);
+        // if (window.focus) {
+        //     newWindow.focus()
+        // }
 
         // Pass database information to dialog window
         window.trace_username = request.username;
@@ -36,6 +43,8 @@ chrome.runtime.onMessage.addListener((request) => {
     }
 });
 
+// If we want to copy headers from requests to responses
+// This function is unused for now
 chrome.webRequest.onBeforeSendHeaders.addListener(
     function (details) {
         console.log("Request: ");
@@ -98,27 +107,27 @@ function changeHeaders(details, allow_origin_value, allow_headers_value, allow_c
 
     // Modify headers to allow CORS
     for (var i = 0; i < details.responseHeaders.length; i++) {
-        if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-origin') {
+        if (details.responseHeaders[i].name.toLowerCase() === 'access-control-allow-origin') {
             access_control_origin_index = i;
             details.responseHeaders[i].value = allow_origin_value;
         }
-        if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-headers') {
+        if (details.responseHeaders[i].name.toLowerCase() === 'access-control-allow-headers') {
             access_control_headers_index = i;
             details.responseHeaders[i].value = allow_headers_value;
         }
-        if (details.responseHeaders[i].name.toLowerCase() == 'access-control-allow-credentials') {
+        if (details.responseHeaders[i].name.toLowerCase() === 'access-control-allow-credentials') {
             access_control_creds_index = i;
             details.responseHeaders[i].value = allow_credentials_value;
         }
     }
     // Add headers if they don't exist
-    if (access_control_origin_index == -1) {
+    if (access_control_origin_index === -1) {
         details.responseHeaders.push({name: 'Access-Control-Allow-Origin', value: allow_origin_value})
     }
-    if (access_control_headers_index == -1) {
+    if (access_control_headers_index === -1) {
         details.responseHeaders.push({name: 'Access-Control-Allow-Headers', value: allow_headers_value})
     }
-    if (access_control_creds_index == -1) {
+    if (access_control_creds_index === -1) {
         details.responseHeaders.push({name: 'Access-Control-Allow-Credentials', value: allow_credentials_value})
     }
 }
@@ -126,7 +135,7 @@ function changeHeaders(details, allow_origin_value, allow_headers_value, allow_c
 // Find new redirected url
 function getLocation(details) {
     for (var i = 0; i < details.responseHeaders.length; i++) {
-        if (details.responseHeaders[i].name.toLowerCase() == 'location') {
+        if (details.responseHeaders[i].name.toLowerCase() === 'location') {
             return details.responseHeaders[i].value;
         }
     }

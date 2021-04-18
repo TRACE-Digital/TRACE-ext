@@ -75,7 +75,7 @@ const Login = (props) => {
                   Log In
                 </Button>
                 <br/>
-                <a href="https://tracedigital.tk/signup" target="_blank">
+                <a href="https://tracedigital.tk/signup" target="_blank" rel="noreferrer">
                     Don't have an account? Create Account
                 </a>
             </CardBody>

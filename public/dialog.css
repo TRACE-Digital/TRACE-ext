@@ -1,0 +1,11 @@
+.body {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.trace-logo {
+    max-width: 300px;
+    height: auto;
+}

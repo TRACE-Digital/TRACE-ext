@@ -35,7 +35,6 @@
       "run_at": "document_start",
       "matches": [
         "*://localhost/*",
-        "*://localhost:*/*",
         "*://tracedigital.tk/*"
       ],
       "js": [

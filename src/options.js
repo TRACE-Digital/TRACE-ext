@@ -1,6 +1,6 @@
 const checkbox = document.getElementById('disable');
 
-// Save options to chrome.storage
+// Save options to browser.storage
 function save_options() {
     const disable = checkbox.checked;
     chrome.storage.sync.set({
@@ -10,7 +10,7 @@ function save_options() {
     });
 }
 
-// Restore checkbox state using preferences stored in chrome.storage
+// Restore checkbox state using preferences stored in browser.storage
 function restore_options() {
     // Use default checked state = true
     chrome.storage.sync.get({
@@ -21,11 +21,14 @@ function restore_options() {
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
-checkbox.addEventListener("click", () => {
-    save_options();
-    if (checkbox.checked) {
-        chrome.runtime.sendMessage({type:'disable_cors', message: "true"});
-    } else {
-        chrome.runtime.sendMessage({type:'disable_cors', message: "false"});
-    }
-});
+
+if (checkbox) {
+    checkbox.addEventListener("click", () => {
+        save_options();
+        if (checkbox.checked) {
+            chrome.runtime.sendMessage({type:'disable_cors', message: "true"});
+        } else {
+            chrome.runtime.sendMessage({type:'disable_cors', message: "false"});
+        }
+    });
+}

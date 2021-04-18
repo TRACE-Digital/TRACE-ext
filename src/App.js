@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 import Amplify from 'aws-amplify';
@@ -8,7 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import { Form, Label, Input, FormGroup, Row, Col, Button } from 'reactstrap';
-import { tags, ManualAccount, getDb, setRemoteUser, setupReplication } from 'trace-search';
+import { tags, ManualAccount, setRemoteUser, setupReplication } from 'trace-search';
 
 import HaveIBeenPwnd from './components/HaveIBeenPwnd.js'
 
@@ -40,7 +40,7 @@ const App = (props) => {
           smallerCognitoUser.signInUserSession = user.signInUserSession;
 
           localStorage.setItem("trace-user", JSON.stringify(smallerCognitoUser, null, 0));
-          console.log(JSON.stringify(smallerCognitoUser, null, 0))
+          // console.log(JSON.stringify(smallerCognitoUser, null, 0))
         } catch (e) {
           console.log(e);
         }
@@ -85,9 +85,9 @@ const App = (props) => {
     var inputs = document.getElementsByTagName('input');
 
     for(var i = 0; i < inputs.length; i++) {
-        if(inputs[i].type.toLowerCase() == 'text') {
+        if(inputs[i].type.toLowerCase() === 'text') {
           inputs[i].value = '';
-        } else if(inputs[i].type.toLowerCase() == 'checkbox') {
+        } else if(inputs[i].type.toLowerCase() === 'checkbox') {
           inputs[i].checked = false;
         }
     }
@@ -153,7 +153,7 @@ const App = (props) => {
   if (isLoggedIn) {
     return (
       <div className="App">
-        <img className="ext-logo" src={mainLogo}></img>
+        <img className="ext-logo" src={mainLogo} alt="trace-logo"></img>
         <Tabs>
           <TabList>
             <Tab style={{fontSize: 14}}>Manage sites</Tab>

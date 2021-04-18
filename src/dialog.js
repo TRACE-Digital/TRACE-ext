@@ -1,7 +1,3 @@
-// import { ManualAccount, tags } from 'trace-search';
-
-// const Trace = require('trace-search');
-
 let username = window.opener.trace_username;
 let trim_username = username.includes('@') ? username.substring(0, username.indexOf('@')) : username;
 let site = window.opener.trace_site;
@@ -57,7 +53,7 @@ document.getElementById("save").addEventListener('click',
         // Add to database
         try {
             await manualAccount.save();
-            doClose();
+            doSave();
         } catch (e) {
             if (e.message === "Document update conflict") {
                 document.getElementById('error').innerHTML = "Account already exists";
@@ -68,7 +64,11 @@ document.getElementById("save").addEventListener('click',
     }, false
 );
 
-function doClose(e) {
+document.getElementById("cancel").addEventListener('click',
+   doCancel, false
+);
+
+function doSave(e) {
     document.getElementById("save").value = 'Saving...'
     document.getElementById("save").disabled = 'true';
     document.getElementById("cancel").disabled = 'true';
@@ -79,6 +79,9 @@ function doClose(e) {
     }, 3000);
 }
 
-document.getElementById("cancel").addEventListener('click',
-   doClose, false
-);
+function doCancel(e) {
+    document.getElementById("save").disabled = 'true';
+    document.getElementById("cancel").disabled = 'true';
+    window.close();
+} 
+

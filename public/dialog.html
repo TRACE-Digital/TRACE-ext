@@ -4,14 +4,15 @@
         <link rel="stylesheet" href="dialog.css">
         <title>New Site Detected</title>
     </head>
-    <body style="text-align:center">
-        <img src="icon.png"></img>
+    <body class="body">
+    <div class="content" style="text-align:center">
+        <img src="trace.png" class="trace-logo"></img>
         <h3>Add to TRACE?</h3>
         <p>Please verify the information below</p>
 
         <div style="width: 260px; margin: 0 auto">
         <form id="form"></form>
-            <div className="form-group" style="text-align: left">
+            <div style="text-align: left">
             <div>
                 <label for="username">Username:</label>
                 <input id="username" type="text" style="width: 260px">
@@ -41,5 +42,6 @@
         <script src="polyfill.js"></script>
         <script src="trace-search.min.js"></script>
         <script type="module" src="static/js/dialog.js"></script>
+    </div>
     </body>
 </html>
