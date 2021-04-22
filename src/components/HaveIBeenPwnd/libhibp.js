@@ -140,12 +140,12 @@ import sha1 from 'sha1'
   
     if (numTimesPwnd === 0) {
       showData("<h5>This password has never been exposed!</h5>");
-      $("*").removeClass("pwnd");
-      $("*").addClass("notPwnd");
+      // $("*").removeClass("pwnd");
+      // $("*").addClass("notPwnd");
     } else {
       showData(`<h5>This password has been exposed ${numTimesPwnd} times.</h5>`);
-      $("*").removeClass("notPwnd");
-      $("*").addClass("pwnd");
+      // $("*").removeClass("notPwnd");
+      // $("*").addClass("pwnd");
     }
   };
   
@@ -203,7 +203,7 @@ import sha1 from 'sha1'
     }
   
     // if (pwnd) {
-    //   $("h5").removeClass("notPwnd");
+    //   $("h45").removeClass("notPwnd");
     //   $("h5").addClass("pwnd");
     // } else {
     //   $("h5").removeClass("pwnd");
