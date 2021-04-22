@@ -53,6 +53,15 @@ const Passwords = () => {
     }
   };
 
+  const toggleHidePassword = (e) => {
+    if ($("#passwordInput").attr("type") !== "password") {
+      $("#passwordInput").prop("type", "password");
+    }
+    else {
+      $("#passwordInput").prop("type", "text");
+    }
+  }
+
   const validate = () => {
     return selectedOptions.length !== 0;
   };
@@ -106,7 +115,12 @@ const Passwords = () => {
       {/* </Row> */}
 
       <br />
-      <Input id="passwordInput" onChange={handleInputChange}></Input>
+
+      <Input id="passwordInput" type="password" onChange={handleInputChange}></Input>
+      <div className="hidePasswordGroup">
+        <input id="hidePassword" type="checkbox" defaultChecked={true} onClick={toggleHidePassword} />
+        <span className="checkbox-name">Hide Password</span>
+      </div>
       <br />
       <StrengthMeter password={password} />
       <br />
@@ -144,8 +158,6 @@ const StrengthMeter = (props) => {
   );
 
   let color = getColor(strength)
-
-  console.log(color)
 
   return <Progress value={strength} max={100} id="progressBar" color={color}>{`${strength}%`}</Progress>
 };
