@@ -25,6 +25,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "cp -v node_modules/trace-search/dist/trace-search.min.js public && INLINE_RUNTIME_CHUNK=false craco build",
+    "yoyo": "echo ${npm_package_version}",
+    "package": "npm run build && cd build && zip -r ../trace-${npm_package_version}.zip . && echo && echo Zipped to trace-${npm_package_version}.zip",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
