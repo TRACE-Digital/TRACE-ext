@@ -14,6 +14,7 @@ It should also be compatible with other Chromium-based browsers like Edge or Bra
 ## Development ##
 
 1. `npm install`
+1. `npm run build`
 1. `npm run firefox` or `npm run chrome`
 
 ## Publish ##

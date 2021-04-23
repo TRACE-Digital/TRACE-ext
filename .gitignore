@@ -1,6 +1,6 @@
 build/
+web-ext-artifacts/
 *.zip
-
 
 # Logs
 logs
