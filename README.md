@@ -1,8 +1,8 @@
 # TRACE Browser Extension #
 
-This extension adds capabilities to [TRACE](https://tracedigital.tk) when used in the browser.
+This extension adds capabilities to the [TRACE](https://tracedigital.tk) website.
 The extension is officially supported and tested in Chrome/Firefox.
-It should also be compatible with most other Chromium-based browsers like Edge or Brave.
+It should also be compatible with other Chromium-based browsers like Edge or Brave.
 
 ## Prerequisites ##
 
@@ -11,8 +11,13 @@ It should also be compatible with most other Chromium-based browsers like Edge o
 | `node` | `14.3.0` |
 | `npm`  | `6.14.5` |
 
-## Build Instructions ##
+## Development ##
 
-1. Run `npm install`
-2. Run `npm run package`
-3. Upload to https://chrome.google.com/webstore/devconsole or https://addons.mozilla.org
+1. `npm install`
+1. `npm run firefox` or `npm run chrome`
+
+## Publish ##
+
+1. `npm install`
+1. `npm run package`
+1. Upload to https://chrome.google.com/webstore/devconsole or https://addons.mozilla.org

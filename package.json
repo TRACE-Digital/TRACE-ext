@@ -23,10 +23,12 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start:react": "react-scripts start",
+    "start": "web-ext run --reload --source-dir build --start-url https://tracedigital.tk --browser-console",
+    "firefox": "npm start -- -t firefox-desktop",
+    "chrome": "npm start -- -t chromium",
     "build": "cp -v node_modules/trace-search/dist/trace-search.min.js public && INLINE_RUNTIME_CHUNK=false craco build",
-    "yoyo": "echo ${npm_package_version}",
-    "package": "npm run build && cd build && zip -r ../trace-${npm_package_version}.zip . && echo && echo Zipped to trace-${npm_package_version}.zip",
+    "package": "npm run build && web-ext build --source-dir build --overwrite-dest",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,6 +55,7 @@
     ]
   },
   "devDependencies": {
+    "web-ext": "^6.1.0",
     "webextension-polyfill": "^0.7.0"
   }
 }
