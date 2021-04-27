@@ -22,7 +22,8 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
-    "storage"
+    "storage",
+    "*://*/*"
   ],
   "background": {
     "scripts": [

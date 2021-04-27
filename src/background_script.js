@@ -45,21 +45,21 @@ chrome.runtime.onMessage.addListener((request) => {
 
 // If we want to copy headers from requests to responses
 // This function is unused for now
-chrome.webRequest.onBeforeSendHeaders.addListener(
-    function (details) {
-        console.log("Request: ");
-        console.log(details);
-    },
-    {
-        urls: ['<all_urls>'],
-        types: ['xmlhttprequest', 'other']//,'stylesheet','script','image','object','xmlhttprequest','other']
-    },
-    ["blocking", "requestHeaders"]
-);
+// chrome.webRequest.onBeforeSendHeaders.addListener(
+//     function (details) {
+//         console.log("Request: ");
+//         console.log(details);
+//     },
+//     {
+//         urls: ['<all_urls>'],
+//         types: ['xmlhttprequest', 'other']//,'stylesheet','script','image','object','xmlhttprequest','other']
+//     },
+//     ["blocking", "requestHeaders"]
+// );
 
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
-        console.log("Response: ");
+        // console.log("Response: ");
         console.log(details);
         let valid_initiator = checkInitiator(details);
 
