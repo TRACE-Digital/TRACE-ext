@@ -11,7 +11,6 @@ import { Form, Label, Input, FormGroup, Row, Col, Button } from "reactstrap";
 import {
   tags,
   ManualAccount,
-  getDb,
   setRemoteUser,
   setupReplication,
 } from "trace-search";
@@ -40,7 +39,7 @@ const App = (props) => {
     (async () => {
       try {
         const user = await Auth.currentUserPoolUser();
-        console.log(user);
+        // console.log(user);
         try {
           const smallerCognitoUser = {};
           smallerCognitoUser.attributes = user.attributes;
@@ -50,7 +49,7 @@ const App = (props) => {
             "trace-user",
             JSON.stringify(smallerCognitoUser, null, 0)
           );
-          console.log(JSON.stringify(smallerCognitoUser, null, 0));
+          // console.log(JSON.stringify(smallerCognitoUser, null, 0));
         } catch (e) {
           console.log(e);
         }
@@ -108,9 +107,9 @@ const App = (props) => {
   }
 
   async function handleSubmit(e) {
-    console.log(siteName);
-    console.log(username);
-    console.log(url);
+    // console.log(siteName);
+    // console.log(username);
+    // console.log(url);
 
     if (siteName && username && url) {
       setShowError(false);
@@ -144,16 +143,16 @@ const App = (props) => {
   }
 
   function handleClickCheckbox(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
 
     if (categories.includes(e.target.value)) {
       categories.splice(categories.indexOf(e.target.value), 1);
       setCategories([...categories]);
-      console.log(categories);
+      // console.log(categories);
     } else {
       categories.push(e.target.value);
       setCategories([...categories]);
-      console.log(categories);
+      // console.log(categories);
     }
   }
 

@@ -11,7 +11,7 @@ document.getElementById("url").value = window.opener.trace_site.concat("/", trim
 
 // Getting user info
 let traceUser = JSON.parse(localStorage.getItem("trace-user"));
-console.log(traceUser);
+// console.log(traceUser);
 
 async function checkIfSiteExists() {
     let traceDb;
@@ -22,7 +22,7 @@ async function checkIfSiteExists() {
     } catch (err) {
         console.log(err);
     }
-    console.log(traceDb);
+    // console.log(traceDb);
 
     const manualSite = { url: account, name: site, tags: [] };
     const manualAccount = new window.TraceSearch.ManualAccount(manualSite, username);
@@ -30,7 +30,7 @@ async function checkIfSiteExists() {
     // Check if it exists in database
     try {
         await traceDb.get(manualAccount.id);
-        console.log("Account exists");
+        // console.log("Account exists");
         window.close();
     } catch (e) {
         console.log(e);
@@ -43,9 +43,9 @@ document.getElementById("save").addEventListener('click',
         let siteName = document.getElementById("siteName").value;
         let url = document.getElementById("url").value;
 
-        console.log(username);
-        console.log(siteName);
-        console.log(url);
+        // console.log(username);
+        // console.log(siteName);
+        // console.log(url);
 
         const manualSite = { url: url, name: siteName, tags: [] };
         const manualAccount = new window.TraceSearch.ManualAccount(manualSite, username);
@@ -74,7 +74,7 @@ function doSave(e) {
     document.getElementById("cancel").disabled = 'true';
 
     setTimeout(() => {
-        console.log('Closing');
+        // console.log('Closing');
         window.close();
     }, 3000);
 }

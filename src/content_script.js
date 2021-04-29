@@ -54,8 +54,8 @@ window.addEventListener('submit',
     function(e) {
         // console.log(username);
         if (username) { 
-            console.log(username.value);
-            // TODO: Change to all browsers
+            // console.log(username.value);
+            // TODO: Check if user is logging into the extension for all browsers
             if (!window.location.href.includes('chrome-extension://')) {
                 chrome.runtime.sendMessage({type:'request_username', username: username.value, site: window.location.hostname});
             }
@@ -77,7 +77,7 @@ function main() {
                 function(e) {
                     // console.log(username);
                     if (username) { 
-                        console.log(username.value);
+                        // console.log(username.value);
                     }
                 }, false
             );
@@ -95,9 +95,9 @@ const verifySignInOrSignUpPage = () => {
     // check inputs
     for (var i = 0; i < inputs.length; i++) {
         if (inputs[i].type.toLowerCase() === 'submit') {
-            console.log(inputs[i].value.toLowerCase());
+            // console.log(inputs[i].value.toLowerCase());
             if (inputs[i].value && signInRegex.test(inputs[i].value.toLowerCase())) {
-                console.log("true");
+                // console.log("true");
                 return true;
             }
         }
@@ -105,16 +105,16 @@ const verifySignInOrSignUpPage = () => {
 
     // check buttons
     for (var j = 0; j < buttons.length; j++) {
-        console.log(buttons[j].type);
+        // console.log(buttons[j].type);
         if (buttons[j].type.toLowerCase() === 'submit') {
-            console.log(buttons[j].innerHTML.trim().toLowerCase());
+            // console.log(buttons[j].innerHTML.trim().toLowerCase());
             if (buttons[j].innerHTML && signInRegex.test(buttons[j].innerHTML.trim().toLowerCase())) {
-                console.log("true");
+                // console.log("true");
                 return true;
             }
         }
     }
-    console.log("false");
+    // console.log("false");
     return false;
 }
 

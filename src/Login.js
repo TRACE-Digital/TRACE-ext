@@ -65,7 +65,7 @@ const Login = (props) => {
                   localError = await signIn(email, password);
                   setError(localError);
                   if (!localError) {
-                    console.log("no error");
+                    // console.log("no error");
                     props.onLogin(true);
                   };
                 }}>

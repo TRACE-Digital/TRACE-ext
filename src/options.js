@@ -6,7 +6,7 @@ function save_options() {
     chrome.storage.sync.set({
         disable: disable
     }, function() {
-        console.log("Options saved");
+        // ("Options saved");
     });
 }
 

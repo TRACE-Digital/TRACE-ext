@@ -10,8 +10,8 @@ var ACCEPTED_HEADERS = ['accept', 'authorization', 'content-type', 'Referer', 'U
 
 chrome.runtime.onMessage.addListener((request) => {
     // get username from the content script
-    console.log("Message received in background.js!", request.username);
-    console.log(request.site);
+    // console.log("Message received in background.js!", request.username);
+    // console.log(request.site);
 
     if (request.type === "request_username" && request.username) {
         // TODO: make popup from extension icon, not a new window
@@ -60,7 +60,7 @@ chrome.runtime.onMessage.addListener((request) => {
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
         // console.log("Response: ");
-        console.log(details);
+        // console.log(details);
         let valid_initiator = checkInitiator(details);
 
         if (valid_initiator && strip_cors) {
@@ -144,7 +144,7 @@ function getLocation(details) {
 
 // Check if request came from a site we want to strip cors from
 function checkInitiator(details) {
-    console.log(details.initiator);
+    // console.log(details.initiator);
     if (valid_sites.test(details.initiator)) {
         return true;
     }
